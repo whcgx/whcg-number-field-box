@@ -1,12 +1,12 @@
 # &lt;whcg-number-field-box&gt;
 
 ```html
-<whcg-number-field-box output="{{result}}"></whcg-number-field>
+<whcg-number-field-box column output="{{result}}"></whcg-number-field>
 ```
 
 ## Getting started 
 
-&lt;whcg-number-field-box&gt; is a box for whcg-number-fields (npm i @whcg/whcg-number-field) with the interface: *output*. All fields are multiplied and the product is returned at *output*.
+&lt;whcg-number-field-box&gt; is a box for whcg-number-fields (npm i @whcg/whcg-number-field) with the interface: *output, column*(optional). All fields are multiplied and the product is returned at *output*.
 
 ## Dependencies
 
