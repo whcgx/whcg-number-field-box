@@ -1,4 +1,4 @@
-import {html,PolymerElement} from '@polymer/polymer/polymer-element.js';
+import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
 
 /**
  * `WhcgNumberFieldBox`
@@ -11,12 +11,24 @@ export class WhcgNumberFieldBox extends PolymerElement {
     static get template() {
         return html `
         <style>
-            :host {
+            
+            #flexbox {
                 display: flex;
+            }
+            .column {
                 flex-direction: column;
             }
+            .row {
+                flex-direction: row; 
+            }
+            ::slotted(*) {
+                padding-right: 15px;
+            }
+
         </style>
-       <slot id="slotid" on-input="_multiplyFields" ></slot>
+        <div id="flexbox" class="row">
+            <slot id="slotid" on-input="_multiplyFields" ></slot>
+        </div>  
     `
 };
 
@@ -32,7 +44,7 @@ export class WhcgNumberFieldBox extends PolymerElement {
             return acc * Number(cur.__data.value);
         }, 1);
         
-        this.output = reducedArray
+        this.output = reducedArray;
     };
 
     static get properties() {
@@ -43,8 +55,19 @@ export class WhcgNumberFieldBox extends PolymerElement {
                 notify: true,
                 readOnly: false,
             },
+            column: {
+                type: Boolean,
+                notify: true,
+                readOnly: false,
+                observer: '_setDirection'
+            },
         }
     };
+
+    _setDirection() {
+        this.$.flexbox.classList.remove('row');
+        this.$.flexbox.classList.add('column');
+    }
 }
 
 window.customElements.define('whcg-number-field-box', WhcgNumberFieldBox);
