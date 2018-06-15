@@ -22,6 +22,8 @@ class WhcgNumberFieldBox extends PolymerElement {
 
     _multiplyFields(e) {
 
+        //added a comment;
+
         let assignednodes = this.$.slotid.assignedNodes();
 
         let filteredArr = assignednodes.filter(element => {
