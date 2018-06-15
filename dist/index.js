@@ -15,12 +15,24 @@ class WhcgNumberFieldBox extends polymerElement_js.PolymerElement {
     static get template() {
         return polymerElement_js.html `
         <style>
-            :host {
+            
+            #flexbox {
                 display: flex;
+            }
+            .column {
                 flex-direction: column;
             }
+            .row {
+                flex-direction: row; 
+            }
+            ::slotted(*) {
+                padding-right: 15px;
+            }
+
         </style>
-       <slot id="slotid" on-input="_multiplyFields" ></slot>
+        <div id="flexbox" class="row">
+            <slot id="slotid" on-input="_multiplyFields" ></slot>
+        </div>  
     `
 };
 
@@ -49,8 +61,19 @@ class WhcgNumberFieldBox extends polymerElement_js.PolymerElement {
                 notify: true,
                 readOnly: false,
             },
+            column: {
+                type: Boolean,
+                notify: true,
+                readOnly: false,
+                observer: '_setDirection'
+            },
         }
     };
+
+    _setDirection() {
+        this.$.flexbox.classList.remove('row');
+        this.$.flexbox.classList.add('column');
+    }
 }
 
 window.customElements.define('whcg-number-field-box', WhcgNumberFieldBox);
