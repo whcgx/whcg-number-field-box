@@ -36,6 +36,7 @@ class WhcgNumberFieldBox extends PolymerElement {
 
     connectedCallback() {
         super.connectedCallback();
+            this._collectChildren();
         this.addEventListener('childrenattached', e => {
             this._multiplyFields();
             e.stopPropagation();
@@ -65,11 +66,30 @@ class WhcgNumberFieldBox extends PolymerElement {
                 notify: true,
                 readOnly: false,
             },
+            type: {
+                type: String,
+                notify: true,
+                readOnly: false,
+            },
+            kind: {
+                type: String,
+                notify: true,
+                readOnly: false,
+            },
+            period: {
+                type: String,
+                notify: true,
+                readOnly: false,
+            },
+            name: {
+                type: String,
+                notify: true,
+                readOnly: false,
+            }
         }
     };
 
-    _multiplyFields() {
-
+    _collectChildren() {
         let assignednodes = this.$.slotid.assignedNodes();
         
 
@@ -77,32 +97,77 @@ class WhcgNumberFieldBox extends PolymerElement {
 
             return element.nodeName === "WHCG-NUMBER-FIELD";
         });
-        let dataArr = filteredArr.map(element => element.__data);
-        console.log(dataArr);
+
+        console.log('filteredArr');
+        console.log(filteredArr);
+        let childrenArr = filteredArr.map(element => element.__data);
+        
 
         let undefinedElement = false;
 
-        dataArr.forEach(element => {
+        childrenArr.forEach(element => {
             if (element === undefined) {
                 undefinedElement = true;
             }
         }); 
 
         if (!undefinedElement) {
-            this.outputString = this.arrayMultiplier(dataArr);
-            this.jsonBuilder(dataArr);
+            this.outputString = this.arrayMultiplier(childrenArr);
+            console.log('this.outputString!');
+            console.log(this.outputString);
+            this.jsonBuilder(childrenArr);
         }
         
     };
 
-    jsonBuilder(dataArr) {
-        let obj = {};
-        obj.result = [];
-        obj.result.push({});
-        dataArr.forEach(element => {
-            obj.result[0][element.label] = element.value;
-        });
-        this.jsondata = JSON.stringify(obj);
+    jsonBuilder(childrenArr) {
+
+        console.log('childrenArr');
+        console.log(childrenArr);
+        let whcgObj = {};
+        whcgObj.result = [];
+
+        function dataFactory(item) {
+            let dataobj = {};
+            for (let i = 0; i < Number(item); i++) {
+                Object.assign(dataobj, {
+                    [childrenArr[i].kind]: {
+                        label: childrenArr[i].label,
+                        dataset: {
+                            [childrenArr[i].period]: Number(childrenArr[i].value)
+                        }
+                    }
+                });
+            }
+
+            Object.assign(dataobj, {
+                [this.kind]: {
+                    label: this.kind,
+                    dataset: {
+                        [this.period]: Number(this.outputString)
+                    }
+                }
+            });
+
+            return dataobj;
+        }
+
+        function resultElementObjFactory() {
+            return {
+                object: this.name,
+                data: dataFactory.call(this, childrenArr.length)
+            }
+        }
+
+        whcgObj.result.push(resultElementObjFactory.call(this));
+
+
+
+        console.log('whcgObj');
+        console.log(whcgObj);
+        this.jsondata = JSON.stringify(whcgObj);
+
+        console.log(this.jsondata);
     };
 
     arrayMultiplier(arr) {
