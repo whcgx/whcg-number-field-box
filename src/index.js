@@ -92,12 +92,15 @@ export class WhcgNumberFieldBox extends PolymerElement {
 
     _collectChildren() {
         let assignednodes = this.$.slotid.assignedNodes();
+        
 
         let filteredArr = assignednodes.filter(element => {
 
             return element.nodeName === "WHCG-NUMBER-FIELD";
         });
 
+        console.log('filteredArr');
+        console.log(filteredArr);
         let childrenArr = filteredArr.map(element => element.__data);
         
 
@@ -111,6 +114,8 @@ export class WhcgNumberFieldBox extends PolymerElement {
 
         if (!undefinedElement) {
             this.outputValue = this.arrayMultiplier(childrenArr);
+            console.log('this.outputString!');
+            console.log(this.outputValue);
             this.jsonBuilder(childrenArr);
         }
         
@@ -118,6 +123,8 @@ export class WhcgNumberFieldBox extends PolymerElement {
 
     jsonBuilder(childrenArr) {
 
+        console.log('childrenArr');
+        console.log(childrenArr);
         let whcgObj = {};
         whcgObj.result = [];
 
@@ -155,8 +162,13 @@ export class WhcgNumberFieldBox extends PolymerElement {
 
         whcgObj.result.push(resultElementObjFactory.call(this));
 
+
+
+        console.log('whcgObj');
+        console.log(whcgObj);
         this.whcgjsonoutput = JSON.stringify(whcgObj);
 
+        console.log(this.whcgjsonoutput);
     };
 
     arrayMultiplier(arr) {
