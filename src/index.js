@@ -26,8 +26,9 @@ export class WhcgNumberFieldBox extends PolymerElement {
             }
 
         </style>
+        <h3>{{name}}</h3>
         <div id="flexbox" class="row">
-            <slot id="slotid" on-input="_multiplyFields" ></slot>
+            <slot id="slotid" on-input="_collectChildren" ></slot>
         </div>  
     `
     };
@@ -36,11 +37,15 @@ export class WhcgNumberFieldBox extends PolymerElement {
 
     connectedCallback() {
         super.connectedCallback();
+
+        if (this.mode !== 'none') {
             this._collectChildren();
-        this.addEventListener('childrenattached', e => {
-            this._multiplyFields();
+            this.addEventListener('childrenattached', e => {
+            this._collectChildren();
             e.stopPropagation();
-        });
+            });
+        }
+
     };
 
 //     disconnectedCallback() {
@@ -50,7 +55,7 @@ export class WhcgNumberFieldBox extends PolymerElement {
     static get properties() {
 
         return {
-            outputString: {
+            outputValue: {
                 type: String,
                 notify: true,
                 readOnly: false,
@@ -61,7 +66,7 @@ export class WhcgNumberFieldBox extends PolymerElement {
                 readOnly: false,
                 observer: '_setDirection'
             },
-            jsondata: {
+            whcgjsonoutput: {
                 type: String,
                 notify: true,
                 readOnly: false,
@@ -71,7 +76,7 @@ export class WhcgNumberFieldBox extends PolymerElement {
                 notify: true,
                 readOnly: false,
             },
-            kind: {
+            datapackage: {
                 type: String,
                 notify: true,
                 readOnly: false,
@@ -85,24 +90,75 @@ export class WhcgNumberFieldBox extends PolymerElement {
                 type: String,
                 notify: true,
                 readOnly: false,
+            },
+            func: {
+                type: String,
+                notify: true,
+                readOnly: false,
+                value: ''
+            },
+            label: {
+                type: String,
+                notify: true,
+                readOnly: false,
+                value: ''
+            },
+            key: {
+                type: String,
+                notify: true,
+                readOnly: false,
+            },
+            value: {
+                type: String,
+                notify: true,
+                readOnly: false,
+            },
+            mode: {
+                type: String,
+                notify:true,
+                readOnly: false,
+                observer: '_modeChanged'
+            },
+            valuearray: {
+                type: String,
+                notify:true,
+                readOnly: false,
+                observer: '_valuearrayChanged'
             }
         }
     };
 
+    static get observers() {
+        return [
+            '_collectChildren(period, value)'
+        ]
+    }
+
+    _valuearrayChanged() {
+        console.log('this.valuearray');
+        console.log(this.valuearray);
+        console.log(JSON.parse(this.valuearray));
+        let valuearrayobj = JSON.parse(this.valuearray);
+
+        let product = valuearrayobj.reduce((acc, item) => {
+            return acc * Number(item);
+        }, 1);
+
+        console.log(product);
+
+        this.value = product;
+        console.log(this.value);
+    }
+
     _collectChildren() {
         let assignednodes = this.$.slotid.assignedNodes();
         
-
         let filteredArr = assignednodes.filter(element => {
-
             return element.nodeName === "WHCG-NUMBER-FIELD";
         });
 
-        console.log('filteredArr');
-        console.log(filteredArr);
         let childrenArr = filteredArr.map(element => element.__data);
         
-
         let undefinedElement = false;
 
         childrenArr.forEach(element => {
@@ -112,13 +168,64 @@ export class WhcgNumberFieldBox extends PolymerElement {
         }); 
 
         if (!undefinedElement) {
-            this.outputString = this.arrayMultiplier(childrenArr);
-            console.log('this.outputString!');
-            console.log(this.outputString);
-            this.jsonBuilder(childrenArr);
+
+            if (this.mode === 'singlefield') {
+                this.jsonBuilderSingleYear(childrenArr);
+            } else {
+                this.outputValue = this.arrayMultiplier(childrenArr);
+                this.jsonBuilder(childrenArr);
+            }
         }
         
     };
+
+    jsonBuilderSingleYear(childrenArr) {
+
+        let whcgObj = {};
+        whcgObj.result = [];
+
+        function dataFactory(period) {
+            let dataobj = {};
+
+            let dataset = {};
+
+            console.log(period);
+
+            for (let i = 0; i < period; i++) {
+                dataset[i] = 0;
+            };
+
+            dataset[this.key] = Number(this.value);
+           
+            Object.assign(dataobj, {
+                [this.datapackage]: {
+                    label: this.label,
+                    dataset: dataset
+                }
+            });
+
+            return dataobj;
+        }
+
+        function resultElementObjFactory() {
+            return {
+                object: this.name,
+                data: dataFactory.call(this, Number(this.period))
+            }
+        }
+
+        whcgObj.result.push(resultElementObjFactory.call(this));
+
+        this.whcgjsonoutput = JSON.stringify(whcgObj);
+
+        console.log('!whcgObj');
+        console.log(whcgObj);
+    };
+
+
+
+
+
 
     jsonBuilder(childrenArr) {
 
@@ -141,17 +248,16 @@ export class WhcgNumberFieldBox extends PolymerElement {
             }
 
             Object.assign(dataobj, {
-                [this.kind]: {
-                    label: this.kind,
+                [this.datapackage]: {
+                    label: this.datapackage,
                     dataset: {
-                        [this.period]: Number(this.outputString)
+                        [this.period]: Number(this.outputValue)
                     }
                 }
             });
 
             return dataobj;
-        };
-
+        }
 
         function resultElementObjFactory() {
             return {
@@ -164,11 +270,11 @@ export class WhcgNumberFieldBox extends PolymerElement {
 
 
 
-        console.log('whcgObj');
+        console.log('whcgObj!');
         console.log(whcgObj);
-        this.jsondata = JSON.stringify(whcgObj);
+        this.whcgjsonoutput = JSON.stringify(whcgObj);
 
-        console.log(this.jsondata);
+        console.log(this.whcgjsonoutput);
     };
 
     arrayMultiplier(arr) {
