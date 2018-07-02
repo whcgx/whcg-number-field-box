@@ -30,8 +30,9 @@ class WhcgNumberFieldBox extends polymerElement_js.PolymerElement {
             }
 
         </style>
+        <h3>{{name}}</h3>
         <div id="flexbox" class="row">
-            <slot id="slotid" on-input="_multiplyFields" ></slot>
+            <slot id="slotid" on-input="_collectChildren" ></slot>
         </div>  
     `
     };
@@ -42,7 +43,7 @@ class WhcgNumberFieldBox extends polymerElement_js.PolymerElement {
         super.connectedCallback();
             this._collectChildren();
         this.addEventListener('childrenattached', e => {
-            this._multiplyFields();
+            this._collectChildren();
             e.stopPropagation();
         });
     };
@@ -54,7 +55,7 @@ class WhcgNumberFieldBox extends polymerElement_js.PolymerElement {
     static get properties() {
 
         return {
-            outputString: {
+            outputValue: {
                 type: String,
                 notify: true,
                 readOnly: false,
@@ -65,7 +66,7 @@ class WhcgNumberFieldBox extends polymerElement_js.PolymerElement {
                 readOnly: false,
                 observer: '_setDirection'
             },
-            jsondata: {
+            whcgjsonoutput: {
                 type: String,
                 notify: true,
                 readOnly: false,
@@ -116,9 +117,9 @@ class WhcgNumberFieldBox extends polymerElement_js.PolymerElement {
         }); 
 
         if (!undefinedElement) {
-            this.outputString = this.arrayMultiplier(childrenArr);
+            this.outputValue = this.arrayMultiplier(childrenArr);
             console.log('this.outputString!');
-            console.log(this.outputString);
+            console.log(this.outputValue);
             this.jsonBuilder(childrenArr);
         }
         
@@ -148,7 +149,7 @@ class WhcgNumberFieldBox extends polymerElement_js.PolymerElement {
                 [this.kind]: {
                     label: this.kind,
                     dataset: {
-                        [this.period]: Number(this.outputString)
+                        [this.period]: Number(this.outputValue)
                     }
                 }
             });
@@ -169,9 +170,9 @@ class WhcgNumberFieldBox extends polymerElement_js.PolymerElement {
 
         console.log('whcgObj');
         console.log(whcgObj);
-        this.jsondata = JSON.stringify(whcgObj);
+        this.whcgjsonoutput = JSON.stringify(whcgObj);
 
-        console.log(this.jsondata);
+        console.log(this.whcgjsonoutput);
     };
 
     arrayMultiplier(arr) {

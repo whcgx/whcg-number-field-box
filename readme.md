@@ -1,7 +1,7 @@
 # &lt;whcg-number-field-box&gt;
 
 ```html
-<whcg-number-field-box column output="{{result}}"></whcg-number-field>
+<whcg-number-field-box column></whcg-number-field-box>
 ```
 
 ## Getting started 
