@@ -1,23 +1,24 @@
 {
   "name": "@whcg/whcg-number-field-box",
-  "version": "1.0.11",
-  "description": "",
+  "version": "1.2.0",
+  "description": "```html <whcg-number-field-box column></whcg-number-field-box> ```",
   "main": "dist/index.js",
   "module": "dist/index.es6.js",
   "scripts": {
-    "build": "rollup -c",
-    "test": "echo \"Error: no test specified\" && exit 1"
+     "build": "rollup -c"
   },
   "files": [
-    "dist"
+     "dist",
+     "theme"
   ],
-  "author": "Fredrik Wassermeyer",
-  "license": "ISC",
-  "devDependencies": {
-    "rollup": "^0.60.7",
-    "rollup-plugin-node-resolve": "^3.3.0"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/whcgx/whcg-number-field-box.git"
   },
-  "dependencies": {
-    "@polymer/polymer": "^3.0.2"
-  }
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/whcgx/whcg-number-field-box/issues"
+  },
+  "homepage": "https://github.com/whcgx/whcg-number-field-box#readme"
 }
