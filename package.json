@@ -1,6 +1,6 @@
 {
   "name": "@whcg/whcg-number-field-box",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "description": "```html <whcg-number-field-box column></whcg-number-field-box> ```",
   "main": "dist/index.js",
   "module": "dist/index.es6.js",
