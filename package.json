@@ -5,11 +5,11 @@
   "main": "dist/index.js",
   "module": "dist/index.es6.js",
   "scripts": {
-     "build": "rollup -c"
+    "build": "rollup -c"
   },
   "files": [
-     "dist",
-     "theme"
+    "dist",
+    "theme"
   ],
   "repository": {
     "type": "git",
@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/whcgx/whcg-number-field-box/issues"
   },
-  "homepage": "https://github.com/whcgx/whcg-number-field-box#readme"
+  "homepage": "https://github.com/whcgx/whcg-number-field-box#readme",
+  "dependencies": {
+    "@polymer/polymer": "^3.0.5"
+  }
 }
