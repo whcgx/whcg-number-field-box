@@ -11,6 +11,9 @@ class WhcgNumberFieldBox extends PolymerElement {
     static get template() {
         return html `
         <style>
+            :root {
+                color: var(--parmaco-base-color-100pct);
+            }
             
             #flexbox {
                 display: flex;
@@ -22,11 +25,11 @@ class WhcgNumberFieldBox extends PolymerElement {
                 flex-direction: row; 
             }
             ::slotted(*) {
-                padding-right: 15px;
+                /* padding-right: 15px;*/
             }
 
         </style>
-        <h3>{{name}}</h3>
+        <!--<h3>{{name}}</h3>-->
         <div id="flexbox" class="row">
             <slot id="slotid" on-input="_collectChildren" ></slot>
         </div>  
