@@ -11,9 +11,6 @@ export class WhcgNumberFieldBox extends PolymerElement {
     static get template() {
         return html `
         <style>
-            :root {
-                color: var(--parmaco-base-color-100pct);
-            }
             
             #flexbox {
                 display: flex;
