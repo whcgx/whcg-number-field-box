@@ -139,19 +139,19 @@ class WhcgNumberFieldBox extends polymerElement_js.PolymerElement {
     }
 
     _valuearrayChanged() {
-        console.log('this.valuearray');
-        console.log(this.valuearray);
-        console.log(JSON.parse(this.valuearray));
+        // console.log('this.valuearray');
+        // console.log(this.valuearray);
+        // console.log(JSON.parse(this.valuearray));
         let valuearrayobj = JSON.parse(this.valuearray);
 
         let product = valuearrayobj.reduce((acc, item) => {
             return acc * Number(item);
         }, 1);
 
-        console.log(product);
+        // console.log(product);
 
         this.value = product;
-        console.log(this.value);
+        // console.log(this.value);
     }
 
     _collectChildren() {
@@ -193,7 +193,7 @@ class WhcgNumberFieldBox extends polymerElement_js.PolymerElement {
 
             let dataset = {};
 
-            console.log(period);
+            // console.log(period);
 
             for (let i = 0; i < period; i++) {
                 dataset[i] = 0;
@@ -221,8 +221,8 @@ class WhcgNumberFieldBox extends polymerElement_js.PolymerElement {
 
         this.whcgjsonoutput = JSON.stringify(whcgObj);
 
-        console.log('!whcgObj');
-        console.log(whcgObj);
+        // console.log('!whcgObj');
+        // console.log(whcgObj);
     };
 
 
@@ -232,8 +232,8 @@ class WhcgNumberFieldBox extends polymerElement_js.PolymerElement {
 
     jsonBuilder(childrenArr) {
 
-        console.log('childrenArr');
-        console.log(childrenArr);
+        // console.log('childrenArr');
+        // console.log(childrenArr);
         let whcgObj = {};
         whcgObj.result = [];
 
@@ -273,11 +273,11 @@ class WhcgNumberFieldBox extends polymerElement_js.PolymerElement {
 
 
 
-        console.log('whcgObj!');
-        console.log(whcgObj);
+        // console.log('whcgObj!');
+        // console.log(whcgObj);
         this.whcgjsonoutput = JSON.stringify(whcgObj);
 
-        console.log(this.whcgjsonoutput);
+        // console.log(this.whcgjsonoutput);
     };
 
     arrayMultiplier(arr) {
